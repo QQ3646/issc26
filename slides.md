@@ -97,7 +97,23 @@ collection.map(x => x * x)           // Создать новую коллекц
 # Анонимные функции
 ## В Scala
 
-1. η-расширение
+1. Цикл <code>for</code>
+```scala
+for i in someSeq:
+  println(i)
+```
+Данный цикл во время компиляции будет превращен в:
+```scala
+someSeq.foreach { i => println(i) }
+```
+
+---
+
+# Анонимные функции
+## В Scala
+
+1. Цикл <code>for</code>
+2. η-расширение
 ```scala
 def increment(x: Int): Int = x + 1
 val list = List(1, 2, 3)
@@ -111,8 +127,9 @@ list.map(increment)
 # Анонимные функции
 ## В Scala
 
-1. η-расширение
-2. Параметры по имени (By-name parameters)
+1. Цикл <code>for</code>
+2. η-расширение
+3. Параметры по имени (By-name parameters)
 ```scala
 def log(message: => String): Unit = {
   if (debug) println(message)
@@ -129,9 +146,10 @@ log("User " + id + " logged in")
 # Анонимные функции
 ## В Scala
 
-1. η-расширение
-2. Параметры по имени (By-name parameters)
-3. Частично примененные функции (Partially Applied Functions)
+1. Цикл <code>for</code>
+2. η-расширение
+3. Параметры по имени (By-name parameters)
+4. Частично примененные функции (Partially Applied Functions)
 
 ```scala
 def sum(a: Int, b: Int): Int = a + b
@@ -145,12 +163,63 @@ val addFive = sum(5, _: Int)
 # Анонимные функции
 ## В Scala
 
-1. η-расширение
-2. Параметры по имени (By-name parameters)
-3. Частично примененные функции (Partially Applied Functions)
-4. Частично определенные функции (Partial Functions)
-5. SAM-типы (Single Abstract Method)
-6. Контекстные функции (Context Functions)
+1. Цикл <code>for</code>
+2. η-расширение
+3. Параметры по имени (By-name parameters)
+4. Частично примененные функции (Partially Applied Functions)
+5. Частично определенные функции (Partial Functions)
+6. SAM-типы (Single Abstract Method)
+7. Контекстные функции (Context Functions)
+
+---
+
+# Анонимные функции
+## В объектно-ориентированных языках программирования
+
+В объектно-ориентированных языках лямбда-функции --- это абстракция над синтетическими классами. Рассмотрим пример:
+````md magic-move
+```scala
+val lambda = { x => println(x) }
+lambda(42)
+```
+```scala{1-5}
+class Lambda$$1 extends (Int => Unit) {
+  override def apply(x: Int) = {
+    println(x)
+  }---
+
+}
+
+val lambda = { x => println(x) }
+lambda(42)
+```
+```scala{7}
+class Lambda$$1 extends (Int => Unit) {
+  override def apply(x: Int) = {
+    println(x)
+  }
+}
+
+val lambda = new Lambda$$1()
+lambda(42)
+```
+```scala
+val capture = "arg = "
+val lambda = { x => println(capture + x) }
+lambda(42)
+```
+```scala{1,7,8}
+class Lambda$$1(prefix: Str) extends (Int => Unit) {
+  override def apply(x: Int) = {
+    println(prefix + x)
+  }
+}
+
+val capture = "arg = "
+val lambda = new Lambda$$1(capture)
+lambda(42)
+```
+````
 
 ---
 
@@ -173,5 +242,29 @@ val addFive = sum(5, _: Int)
 Из-за чего возникают издержки по памяти и времени.
 
 <v-click>
-Безусловно, существует набор оптимизаций, которые могут помочь, но они могут помочь не всегда
+Безусловно, существует набор оптимизаций, которые могут помочь в избавлении от создания объектов в куче.
 </v-click>
+
+---
+
+# Оптимизации
+## Анализ утеканий
+
+Цель оптимизации --- полностью или по полям переместить объект с кучи на стек. Это возможно сделать при соблюдении главного условия: объект не должен *утекать*, т.е. переходить в более
+широкую (относительно места создания) область видимости.
+
+<v-click>
+Утеканиями будем считать:
+</v-click>
+
+<v-clicks>
+
+1. Присваивание в статическое поле, поле объекта или в массив
+2. Возврат из функции, если объект был создан внутри тела функции 
+3. Передача в функцию, которую невозможно проанализировать
+
+</v-clicks>
+
+---
+
+# 
