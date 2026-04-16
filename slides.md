@@ -156,98 +156,120 @@ lambda(42)
 # Оптимизации
 ## Анализ утеканий
 
-<div class="grid grid-cols-2 gap-4">
-<div class="col-span-2 rows-span-2">
+<v-click>
+
+1. Скаляризация объектов
 
 ````md magic-move
 ```scala
 class SomeObject(var a: Int, var b: Double, c: String)
 
 val obj = SomeObject(42, 42.0, "42")
+useField(obj.a)
+useField(obj.b)
+obj.c = "override"
 ```
+```scala
+class SomeObject(var a: Int, var b: Double, c: String)
+
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
+```
+````
+
+</v-click>
+
+<v-click>
+
+* Данное преобразование может быть применено только на объектах, у которых нет использований по ссылке
+
+</v-click>
+
+---
+
+# Оптимизации
+## Анализ утеканий
+
+2. Создание объектов на стеке
+
+````md magic-move
 ```scala
 class SomeObject(var a: Int, var b: Double, c: String)
 
 val obj = SomeObject(42, 42.0, "42")
 useField(obj.a)
 useField(obj.b)
-useField(obj.c)
-```
-```scala
-class SomeObject(var a: Int, var b: Double, c: String)
-
-val (objA, objB, objC) = (42, 42.0, "42")
-useField(objA)
-useField(objB)
-useField(objC)
-```
-```scala
-class SomeObject(var a: Int, var b: Double, c: String)
-
-val (objA, objB, objC) = (42, 42.0, "42")
-useField(objA)
-useField(objB)
-useField(objC)
+obj.c = "override"
 
 useObject(obj)
 ```
-```scala{*|*|*}
-class SomeObject(var a: Int, var b: Double, c: String)
-
-val (objA, objB, objC) = (42, 42.0, "42")
-useField(objA)
-useField(objB)
-useField(objC)
-
-useObject(rematerialize(objA, objB, objC))
-```
 ```scala
 class SomeObject(var a: Int, var b: Double, c: String)
 
-{
-  val (objA, objB, objC) = (42, 42.0, "42")
-  useField(objA)
-  useField(objB)
-  useField(objC)
+val obj = onStack(SomeObject(42, 42.0, "42"))
+useField(obj.a)
+useField(obj.b)
+obj.c = "override"
 
-  useObject(rematerialize(objA, objB, objC))
-  return obj  // ?
-}
+useObject(obj)
 ```
 ````
 
-</div>
+<v-click>
 
-<div class="rows-span-1">
-
-<v-click at="5">
-
-```scala
-def useObject(x: SomeObject) = {
-  globalField = x
-  otherObject.x = x
-  array.add(x)
-}
-```
+* Можно применить, если доказанно, что объект существует только в пределах своего стекового кадра 
 
 </v-click>
-</div>
 
-<div class="rows-span-1">
-<v-click at="6">
+---
+
+# Оптимизации
+## Анализ эвакуаций
 
 ```scala
-def useObject(x: SomeObject)  // ???
-⠀
-⠀
-⠀
-⠀
+class SomeObject(var a: Int, var b: Double, c: String)
+
+val obj = onStack(SomeObject(42, 42.0, "42"))
+useField(obj.a)
+useField(obj.b)
+obj.c = "override"
+
+otherObject.field = obj  // otherObject также находится на стеке
+useObject(obj)
+
+...
+
+staticField = heapification(otherObject)
 ```
 
-</v-click>
-</div>
+<v-click>
 
-</div>
+* Мощный оптимистичный статический анализ, который обходит весь граф вызовов
+
+</v-click>
+
+
+<v-click>
+
+* Однако обладает большими издержками: увеличение времени компиляции до 300 раз
+
+</v-click>
+
+---
+
+# Оптимизации
+## Стратегии
+
+1. Анализ утеканий
+2. Анализ эвакуаций
+
+<v-click>
+
+3. Частичный анализ эвакуаций
+
+</v-click>
 
 ---
 
@@ -284,6 +306,46 @@ def useObject(x: SomeObject)  // ???
 2. Изучить текущую реализацию в компиляторе **Huawei VM**
 3. Разработать и реализовать оптимизацию
 4. Протестировать и замерить результаты
+
+</v-click>
+
+---
+
+# Частичный анализ эвакуаций
+## Идея
+
+````md magic-move
+```scala
+def lambdaUse(x: (Int => Unit)) = {
+  ...
+  if (globalFlag) {  // Всегда == false
+    globalVar = x
+  }
+  ...
+}
+
+val lambda = { x => println(x) }
+lambdaUse(lambda)
+```
+```scala{4,9}
+def lambdaUse(x: (Int => Unit)) = {
+  ...
+  if (globalFlag) {  // Всегда == false
+    globalVar = evacuate(x)
+  }
+  ...
+}
+
+val lambda = onStack( { x => println(x)} )
+lambdaUse(lambda)
+```
+````
+
+<v-click>
+
+* Будем перемещать объект на стек, если у него нет гарантированного *утекающего* использования
+* Если такие использования есть, то перед их исполнением будем вставлять операцию *эвакуация*, которая создаст копию 
+объекта на куче
 
 </v-click>
 
@@ -344,7 +406,7 @@ def useObject(x: SomeObject)  // ???
 
 ---
 
-# Анализ утеканий
+# Частичный анализ эвакуаций
 ## Алгоритм
 
 <div class="flex items-center justify-center gap-4 w-full max-w-4xl mx-auto text-sm">
