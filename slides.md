@@ -46,16 +46,15 @@ mdc: true
 
 </div>
 <div>
-````md magic-move
+
+<v-click at="1">
+
 ```scala
-def filterEven(x: Int): Bool = {
-  x % 2 == 0
-}
+val even = { x: Int => x % 2 == 0 }
 ```
-```scala
-val filerEvenLambda: Int => Bool = { x: Int => x % 2 }
-```
-````
+
+</v-click>
+
 <br>
 <br>
 <br>
@@ -63,12 +62,12 @@ val filerEvenLambda: Int => Bool = { x: Int => x % 2 }
 <v-click at="2">
 
 ```scala
-val capture: Int = 5
-val functionalCaputre: => Int = { capture }
+val m: Int = 5
+val leq = { x => x < m }
 
 ...
 
-functionalCapture() // == 5
+leq(x) // == { x < 5 }
 ```
 
 </v-click>
@@ -76,16 +75,19 @@ functionalCapture() // == 5
 <v-click at="3">
 ```scala
 val collection: Seq[Int] = ...
-collection.filter(x => x % 2)
-collection.sort(x, y => x > y)
-collection.foreach(x => println(x))
-collection.map(x => x * x)
+collection.filter (x    => x % 2)
+collection.sort   (x, y => x > y)
+collection.foreach(x    => println(x))
+collection.map    (x    => x * x)
 ...
 ```
 </v-click>
 
 </div>
 </div>
+
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
 ---
 
 # Анонимные функции
@@ -94,36 +96,12 @@ collection.map(x => x * x)
 В объектно-ориентированных языках лямбда-функции --- это абстракция над синтетическими классами.
 ````md magic-move
 ```scala
-val lambda = { x => println(x) }
-lambda(42)
-```
-```scala{1-5}
-class Lambda$$1 extends (Int => Unit) {
-  override def apply(x: Int) = {
-    println(x)
-  }
-}
-
-val lambda = { x => println(x) }
-lambda(42)
-```
-```scala{7}
-class Lambda$$1 extends (Int => Unit) {
-  override def apply(x: Int) = {
-    println(x)
-  }
-}
-
-val lambda = new Lambda$$1()
-lambda(42)
-```
-```scala
 val capture = "arg = "
 
 val lambda = { x => println(capture + x) }
 lambda(42)
 ```
-```scala{1,7,8}
+```scala
 class Lambda$$1(val prefix: Str) extends (Int => Unit) {
   override def apply(x: Int) = {
     println(prefix + x)
@@ -143,12 +121,14 @@ lambda(42)
 
 </v-click>
 
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
 ---
 
 # Постановка задачи
 ##
 
-**Цель**: оптимизация изджержек представления анонимных функций в объектно-ориентированных языках программирования, путем реализации межпроцедурного анализа утеканий 
+**Цель**: оптимизация изджержек представления анонимных функций в объектно-ориентированных языках программирования, путем реализации межпроцедурного анализа частичных утеканий 
 
 <v-click>
 
@@ -160,6 +140,8 @@ lambda(42)
 4. Провести апробацию на представительном наборе тестов и приложений
 
 </v-click>
+
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
@@ -197,6 +179,8 @@ objC = "override"
 
 </v-click>
 
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
 ---
 
 # Оптимизации
@@ -233,6 +217,8 @@ useObject(obj)
 
 </v-click>
 
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
 ---
 
 # Оптимизации
@@ -256,16 +242,18 @@ staticField = heapification(otherObject)
 
 <v-click>
 
-* Мощный оптимистичный статический анализ, который обходит весь граф вызовов
+* Оптимистичный статический анализ
 
 </v-click>
 
 
 <v-click>
 
-* Однако обладает большими издержками: увеличение времени компиляции до 300 раз
+* Однако обладает издержками на дополнительную метаинформацию
 
 </v-click>
+
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
@@ -283,6 +271,8 @@ staticField = heapification(otherObject)
     - Большое количество перемещаемых на стек объектов
     - Требуются эвакуации --- операция глобального рекурсивного перемещения на кучу
     - Статический анализ занимает много времени, а также требуется дополнительная метаинформация о расположении объектов на стеке
+
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
@@ -324,18 +314,7 @@ lambdaUse(lambda)
 
 </v-click>
 
----
-
-# Межпроцедурный анализ частичных эвакуаций
-## Алгоритм
-
-* Алгоритм рассматривает только *помеченные* типы, в данной работе в качестве помеченных типов рассматриваются только лямбда-функции и функциональные интерфейсы
-
-<v-click>
-
-*Утверждение 1.* Анализ остается корректным при любой конфигурации помеченных типов
-
-</v-click>
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
@@ -362,6 +341,8 @@ def evacuation[T](x: T): T = {
 }
 ```
 ````
+
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
@@ -398,10 +379,12 @@ def evacuation[T](x: T): T = {
 
 </v-click>
 
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
 ---
 
 # Окружение
-## Huawei VM
+## Многоязыковая виртуальная машина Huawei
 
 1. Оптимизирующий статический компилятор
 2. Управляемая среда исполнения
@@ -420,12 +403,16 @@ def evacuation[T](x: T): T = {
 <img src="/pics/Huawei.svg" class="aaa"/>
 </div>
 
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
 ---
 
 # Результаты
 ## Статистика
 
 ...
+
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
@@ -440,9 +427,18 @@ def evacuation[T](x: T): T = {
 
 # Направления дальнейшей работы
 
-1. Расширить анализ на другие типы 
+1. Расширить анализ на другие типы, помимо лямбда-функций
 2. Добавить поддержку использования профилировочной информации
 
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
+---
+class: text-center
+layout: cover
+
+---
+
+# Спасибо за внимание
 
 ---
 
