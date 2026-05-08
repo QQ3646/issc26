@@ -1,6 +1,6 @@
 ---
 # some information about your slides (markdown enabled)
-title: Эффективная реализация лямбда-функций в объектно-ориентированных языках программирования
+title: Эффективная реализация анонимных функций в объектно-ориентированных языках
 
 # apply unocss classes to the current slide
 class: text-center
@@ -9,82 +9,10 @@ class: text-center
 mdc: true
 ---
 
-# Эффективная реализация лямбда-функций в объектно-ориентированных языках программирования
+# Эффективная реализация анонимных функций в объектно-ориентированных языках
 
 ### Болохононов Артем
 ### Научный руководитель: Трепаков Иван Сергеевич
-
----
-
-# Анонимные функции
-## Определение
-
-<div class="grid grid-cols-2 gap-4">
-
-<div>
-
-<v-click at="1">
-
-* *Анонимные функции* (или *лямбда-функции*) --- функции, которые создаются по ходу программы и 
-не имеют уникального индентификатора,
-
-</v-click>
-
-<v-click at="2">
-
-* Анонимные функции могут замыкать окружающий контекст, в таком случае они называются *функциональными замыканиями*,
-
-</v-click>
-<br>
-<v-click at="3">
-
-* Сейчас в объектно-ориентированных языках программирования они используются повсеместно, часто используются при работе с коллекциями.
-
-</v-click>
-
-</div>
-<div>
-
-<v-click at="1">
-
-```scala
-val even = { x: Int => x % 2 == 0 }
-```
-
-</v-click>
-
-<br>
-<br>
-<br>
-
-<v-click at="2">
-
-```scala
-val m: Int = 5
-val leq = { x => x < m }
-
-...
-
-leq(x) // == { x < 5 }
-```
-
-</v-click>
-
-<v-click at="3">
-```scala
-val collection: Seq[Int] = ...
-collection.filter (x    => x % 2)
-collection.sort   (x, y => x > y)
-collection.foreach(x    => println(x))
-collection.map    (x    => x * x)
-...
-```
-</v-click>
-
-</div>
-</div>
-
-<SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
@@ -146,9 +74,30 @@ lambda(42)
 # Оптимизации
 ## Анализ утеканий
 
-<v-click>
+```scala
+class SomeObject(var a: Int, var b: Double, c: String)
 
-1. Скаляризация объектов
+val obj = SomeObject(42, 42.0, "42")
+useField(obj.a)
+useField(obj.b)
+obj.c = "override"
+
+if (someBoolean) {
+  method(obj)
+}
+
+if (anotherBoolean) {
+  return obj
+}
+```
+
+---
+
+# Оптимизации
+## Анализ утеканий
+
+<div class="grid grid-cols-2 gap-4">
+<div>
 
 ````md magic-move
 ```scala
@@ -169,13 +118,40 @@ objC = "override"
 ```
 ````
 
-</v-click>
-
 <v-click>
 
 * Данное преобразование может быть применено только на объектах, у которых нет использований по ссылке.
 
 </v-click>
+
+</div>
+<div>
+
+<!-- <svg viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+    </marker>
+  </defs>
+
+  <line x1="200" y1="75" x2="200" y2="160" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+  <line x1="200" y1="220" x2="200" y2="300" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+
+  <path d="M 120 50 Q 20 190 120 330" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)" />
+
+  <text x="200" y="50" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">скаляризованное</text>
+  <text x="200" y="200" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">на стеке</text>
+  <text x="200" y="350" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">в куче</text>
+</svg> -->
+
+<svg v-click="3" viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+  <text x="200" y="50" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">скаляризованное</text>
+</svg>
+
+
+</div>
+</div>
+
 
 <SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
@@ -184,91 +160,171 @@ objC = "override"
 # Оптимизации
 ## Анализ утеканий
 
-2. Создание объектов на стеке
+<div class="grid grid-cols-2 gap-4">
+<div>
 
 ````md magic-move
 ```scala
 class SomeObject(var a: Int, var b: Double, c: String)
 
-val obj = SomeObject(42, 42.0, "42")
-useField(obj.a)
-useField(obj.b)
-obj.c = "override"
-
-useObject(obj)
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
 ```
 ```scala
 class SomeObject(var a: Int, var b: Double, c: String)
 
-val obj = onStack(SomeObject(42, 42.0, "42"))
-useField(obj.a)
-useField(obj.b)
-obj.c = "override"
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
 
-useObject(obj)
+if (someBoolean) {
+  return obj  // ?
+}
+```
+```scala
+class SomeObject(var a: Int, var b: Double, c: String)
+
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
+
+if (someBoolean) {
+  return rematerialize(objA, objB, objC)
+}
 ```
 ````
 
-<v-click>
+</div>
+<div>
 
-* Можно применить, если доказанно, что объект существует только в пределах своего стекового кадра. 
+<svg viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+    </marker>
+  </defs>
 
-</v-click>
+  <path v-click="3" d="M 120 50 Q 20 190 120 330" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow)" />
+
+  <text x="200" y="50" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">скаляризованное</text>
+  <text v-click="3" x="200" y="350" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">в куче</text>
+</svg>
+
+</div>
+</div>
 
 <SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
 ---
 
 # Оптимизации
-## Анализ эвакуаций
+## Анализ утеканий
 
+<div class="grid grid-cols-2 gap-4">
+<div>
+
+````md magic-move
 ```scala
 class SomeObject(var a: Int, var b: Double, c: String)
 
-val obj = onStack(SomeObject(42, 42.0, "42"))
-useField(obj.a)
-useField(obj.b)
-obj.c = "override"
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
 
-otherObject.field = obj  // otherObject также находится на стеке
-useObject(obj)
+if (someBoolean) {
+  return rematerialize(objA, objB, objC)
+}
+```
+```scala
+class SomeObject(var a: Int, var b: Double, c: String)
 
-...
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
 
-staticField = heapification(otherObject)
+if (someBoolean) {
+  return rematerialize(objA, objB, objC)
+}
+
+if (anotherBoolean) {
+  method(obj)  // ?
+}
+```
+```scala{*|*|*}
+class SomeObject(var a: Int, var b: Double, c: String)
+
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
+
+if (someBoolean) {
+  return rematerialize(objA, objB, objC)
+}
+
+if (anotherBoolean) {
+  // метод не содержит утеканий
+  method(reconstruct(obj))  // на стеке
+}
+```
+```scala
+class SomeObject(var a: Int, var b: Double, c: String)
+
+val (objA, objB, objC) = (42, 42.0, "42")
+useField(objA)
+useField(objB)
+objC = "override"
+
+if (someBoolean) {
+  return rematerialize(objA, objB, objC)
+}
+
+if (anotherBoolean) {
+  // метод не содержит утеканий
+  method(reconstruct(obj))  // на стеке --- некорректно
+}
+```
+````
+
+<v-click at="4">
+
+```scala
+def method(o: SomeObject) = {
+  if (anotherBoolean2) {  // всегда false
+    staticField = o
+  }
+}
 ```
 
-<v-click>
-
-* Оптимистичный статический анализ,
-
 </v-click>
 
+</div>
+<div>
 
-<v-click>
+<svg viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+    <marker id="arrow-2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
+    </marker>
+  </defs>
 
-* Однако обладает издержками на дополнительную метаинформацию.
+  <line v-click="3" x1="200" y1="75" x2="200" y2="160" stroke="currentColor" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow-2)"/>
+  <line v-click="6" x1="200" y1="220" x2="200" y2="300" stroke="currentColor" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow-2)" stroke-dasharray="8 6"/>
+  <path d="M 120 50 Q 20 190 120 330" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" marker-end="url(#arrow-2)" />
 
-</v-click>
+  <text x="200" y="50" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">скаляризованное</text>
+  <text v-click="3" x="200" y="200" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">на стеке</text>
+  <text x="200" y="350" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">в куче</text>
+</svg>
 
-<SlideCurrentNo class="absolute right-40px bottom-30px"/>
-
----
-
-# Оптимизации
-## Стратегии
-
-1. Анализ утеканий
-    - Скаляризация
-        - Локальный анализ,
-        - У объекта отсутствуют использования по ссылке.
-    - Размещение на стеке
-        - Локальный и межпроцедурный анализ,
-        - У объекта отсутствуют утекания во всем графе вызовов;
-2. Анализ эвакуаций
-    - Большое количество перемещаемых на стек объектов,
-    - Требуются эвакуации --- операция глобального рекурсивного перемещения на кучу,
-    - Требуется дополнительная метаинформация о расположении объектов на стеке.
+</div>
+</div>
 
 <SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
@@ -408,10 +464,12 @@ def evacuation[T](x: T): T = {
 # Результаты
 ## Статистика
 
+Количество перемещений на стек; больше --- лучше
+
 | Название теста            | Анализ утеканий | Межпроцедурный анализ частичных утеканий |
 | :-----------------------: | :-------------: | :--------------------------------------: |
-| scala-std                 | 463 + 103       | 397                                      |
-| Виртуальная машина Huawei | 799 + 394       | 4488                                     |
+| scala-std                 | 103             | 397                                      |
+| Виртуальная машина Huawei | 394             | 4488                                     |
 
 <SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
