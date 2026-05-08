@@ -127,9 +127,9 @@ objC = "override"
 </div>
 <div>
 
-<!-- <svg viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+<!-- <svg" class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrow" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
     </marker>
   </defs>
@@ -144,10 +144,9 @@ objC = "override"
   <text x="200" y="350" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">в куче</text>
 </svg> -->
 
-<svg v-click="3" viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+<svg v-click="3" class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
   <text x="200" y="50" text-anchor="middle" fill="currentColor" font-size="8" font-style="italic" font-family="serif">скаляризованное</text>
 </svg>
-
 
 </div>
 </div>
@@ -201,9 +200,9 @@ if (someBoolean) {
 </div>
 <div>
 
-<svg viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+<svg class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
     <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrow" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
     </marker>
   </defs>
@@ -307,9 +306,9 @@ def method(o: SomeObject) = {
 </div>
 <div>
 
-<svg viewBox="0 0 400 400" class="w-full h-auto max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-    <marker id="arrow-2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+<svg class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow-2" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
     </marker>
   </defs>
@@ -365,6 +364,27 @@ lambdaUse(lambda)
 * Будем перемещать объект на стек, если у него нет гарантированного *утекающего* использования,
 * Если такие использования есть, то перед их исполнением будем вставлять операцию *эвакуация*, 
 которая создаст копию объекта на куче.
+
+</v-click>
+
+<SlideCurrentNo class="absolute right-40px bottom-30px"/>
+
+---
+
+# Межпроцедурный анализ частичных утеканий
+## Классификация использований
+
+Утеканиями будем считать:
+
+1. Возврат из метода;
+2. Запись анализируемого объекта:
+    - В поле другого объекта,
+    - В качестве элемента массива,
+    - В статическую переменную;
+
+<v-click>
+
+*3. Вызов функции, если для соответствующего параметра вычислилось, что он утекает.*
 
 </v-click>
 
