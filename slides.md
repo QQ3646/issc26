@@ -159,7 +159,7 @@ objC = "override"
 # Оптимизации
 ## Анализ утеканий
 
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-2 gap-4" style="height: 80%;">
 <div>
 
 ````md magic-move
@@ -200,9 +200,9 @@ if (someBoolean) {
 </div>
 <div>
 
-<svg class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+<svg class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg" style="height: 100%; min-height: 100%; display: block;">
     <defs>
-    <marker id="arrow" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker viewBox="0 0 10 10" id="arrow" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse" >
       <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
     </marker>
   </defs>
@@ -223,7 +223,7 @@ if (someBoolean) {
 # Оптимизации
 ## Анализ утеканий
 
-<div class="grid grid-cols-2 gap-4">
+<div class="grid grid-cols-2 gap-4" style="height: 80%;">
 <div>
 
 ````md magic-move
@@ -295,7 +295,7 @@ if (anotherBoolean) {
 
 ```scala
 def method(o: SomeObject) = {
-  if (anotherBoolean2) {  // всегда false
+  if (anotherBoolean2) {  // очень редко
     staticField = o
   }
 }
@@ -306,7 +306,7 @@ def method(o: SomeObject) = {
 </div>
 <div>
 
-<svg class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg">
+<svg class="w-full h-full max-w-md mx-auto" xmlns="http://www.w3.org/2000/svg" style="height: auto; min-height: 100%; display: block;">
   <defs>
     <marker id="arrow-2" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
       <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor" />
