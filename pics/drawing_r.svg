@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="drawing_r.svg"
+   inkscape:version="1.4.3 (0d15f75042, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     inkscape:zoom="2.3697898"
+     inkscape:cx="249.17822"
+     inkscape:cy="152.54517"
+     inkscape:window-width="2607"
+     inkscape:window-height="2116"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code';writing-mode:lr-tb;direction:ltr;fill:#000000;stroke-width:0.264583"
+       x="-0.36761293"
+       y="4.8628993"
+       id="text1"><tspan
+         sodipodi:role="line"
+         style="font-size:5.64444px;stroke-width:0.264583"
+         x="-0.36761293"
+         y="4.8628993"
+         id="tspan2">Call[<tspan
+   style="fill:#0400b4;fill-opacity:1"
+   id="tspan3">SomeMethod</tspan>](<tspan
+   style="fill:#bc4500;fill-opacity:1;fill-rule:nonzero"
+   id="tspan4">param1</tspan>, <tspan
+   style="fill:#bc4500;fill-opacity:1"
+   id="tspan5">param2</tspan>, <tspan
+   style="fill:#bc4500;fill-opacity:1"
+   id="tspan6">param3</tspan>, ...)</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1"
+       d="m 68.948175,6.0902025 v 3.491611"
+       id="path10" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.165;stroke-dasharray:none;stroke-opacity:1"
+       x="61.833546"
+       y="13.053688"
+       id="text10"><tspan
+         sodipodi:role="line"
+         id="tspan10"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Light';stroke-width:0.165"
+         x="61.833546"
+         y="13.053688">NoEscape</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Light';stroke-width:0.165"
+         x="61.833546"
+         y="17.022438"
+         id="tspan11">Escape</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.293114;stroke-dasharray:none;stroke-opacity:1"
+       d="M 62.053895,10.126664 H 61.136911"
+       id="path11" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.293114;stroke-dasharray:none;stroke-opacity:1"
+       d="m 61.136912,17.653026 h 0.916982"
+       id="path12" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.264999;stroke-dasharray:none;stroke-opacity:1"
+       d="m 61.269494,10.126664 v 7.658862"
+       id="path13" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1"
+       d="m 96.736305,6.0901985 v 3.491611"
+       id="path10-3" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.165;stroke-dasharray:none;stroke-opacity:1"
+       x="89.621674"
+       y="13.053688"
+       id="text10-7"><tspan
+         sodipodi:role="line"
+         id="tspan10-5"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Light';stroke-width:0.165"
+         x="89.621674"
+         y="13.053688">NoEscape</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Light';stroke-width:0.165"
+         x="89.621674"
+         y="17.022438"
+         id="tspan11-9">Escape</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.293114;stroke-dasharray:none;stroke-opacity:1"
+       d="m 89.842025,10.12666 h -0.91698"
+       id="path11-2" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.293114;stroke-dasharray:none;stroke-opacity:1"
+       d="m 88.925045,17.653026 h 0.91698"
+       id="path12-2" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.264999;stroke-dasharray:none;stroke-opacity:1"
+       d="m 89.057625,10.12666 v 7.658866"
+       id="path13-8" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.265;stroke-dasharray:none;stroke-opacity:1"
+       d="m 124.43334,6.0902085 v 3.491611"
+       id="path10-3-1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code';writing-mode:lr-tb;direction:ltr;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.165;stroke-dasharray:none;stroke-opacity:1"
+       x="117.31871"
+       y="13.053688"
+       id="text10-7-2"><tspan
+         sodipodi:role="line"
+         id="tspan10-5-9"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Light';stroke-width:0.165"
+         x="117.31871"
+         y="13.053688">NoEscape</tspan><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:3.175px;font-family:'Fira Code';-inkscape-font-specification:'Fira Code Light';stroke-width:0.165"
+         x="117.31871"
+         y="17.022438"
+         id="tspan11-9-3">Escape</tspan></text>
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.293114;stroke-dasharray:none;stroke-opacity:1"
+       d="m 117.53906,10.12667 h -0.91698"
+       id="path11-2-1" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.293114;stroke-dasharray:none;stroke-opacity:1"
+       d="m 116.62208,17.653036 h 0.91698"
+       id="path12-2-9" />
+    <path
+       style="fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.264999;stroke-dasharray:none;stroke-opacity:1"
+       d="m 116.75466,10.12667 v 7.658876"
+       id="path13-8-4" />
+  </g>
+</svg>
