@@ -370,7 +370,7 @@ def lambdaUse(x: (Int => Unit)) = {
 
 ````md magic-move
 ```asm
-    call "EVACUATION"
+    ALLOCATE_AND_COPY
 ```
 ```asm
     cmp   object, 0        ; если объект == null
