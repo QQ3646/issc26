@@ -248,7 +248,7 @@ def lambdaUse(x: (Int => Unit)) = {
   ...
 }
 ```
-```scala{4,9}
+```scala{1,7}
 val lambda = onStack( { x => println(x) } )
 lambdaUse(lambda)
 
@@ -293,7 +293,7 @@ def lambdaUse(x: (Int => Unit)) = {
 </div>
 
 <div class="box" v-click>
-<img src="/pics/drawing_new.svg" class="aaa"/>
+<img src="/pics/drawing_new_upd.svg" class="aaa"/>
 </div>
 
 <SlideCurrentNo class="absolute right-40px bottom-30px"/>
@@ -313,7 +313,7 @@ def lambdaUse(x: (Int => Unit)) = {
 </style>
 
 <div class="absolute right-40% bottom-40px">
-<img src="/pics/cfg.svg" class="box-2"/>
+<img src="/pics/cfg_upd.svg" class="box-2"/>
 </div>
 
 
@@ -334,7 +334,7 @@ def lambdaUse(x: (Int => Unit)) = {
 </style>
 
 <div class="absolute right-40% bottom-40px">
-<img src="/pics/cfg_2.svg" class="box-3"/>
+<img src="/pics/cfg_2_upd.svg" class="box-3"/>
 </div>
 
 
@@ -373,18 +373,18 @@ def lambdaUse(x: (Int => Unit)) = {
     call "EVACUATION"
 ```
 ```asm
-    cmp   param, 0        ; если объект == null
+    cmp   object, 0        ; если объект == null
     jne   else
-    mov   ecx, 0          ; возвращаем null
+    mov   ecx, 0           ; возвращаем null
     jmp   continue
 else:
-    mov   eax, [param]
-    test  eax, eax        ; если объект уже на куче
+    mov   eax, [object]
+    test  eax, eax         ; если объект уже на куче
     jne   else_if
-    mov   ecx, param      ; возвращаем его же
+    mov   ecx, object      ; возвращаем его же
     jmp   continue
 else_if:
-    call  "EVACUATION"    ; иначе копируем
+    ALLOCATE_AND_COPY      ; иначе копируем
 continue:
     ...
 ```
@@ -404,40 +404,40 @@ continue:
 
 ````md magic-move
 ```asm{*|*}{at:0}
-    cmp   param, 0        ; если объект == null
+    cmp   object, 0        ; если объект == null
     jne   else
-    mov   ecx, 0          ; возвращаем null
+    mov   ecx, 0           ; возвращаем null
     jmp   continue
 else:
-    mov   eax, [param]
-    test  eax, eax        ; если объект уже на куче
+    mov   eax, [object]
+    test  eax, eax         ; если объект уже на куче
     jne   else_if
-    mov   ecx, param      ; возвращаем его же
+    mov   ecx, object      ; возвращаем его же
     jmp   continue
 else_if:
-    call  "EVACUATION"    ; иначе копируем
+    ALLOCATE_AND_COPY      ; иначе копируем
 continue:
     ...
 ```
 ```asm{8,11-16}
-    cmp   param, 0        ; если объект == null
+    cmp   object, 0        ; если объект == null
     jne   else
-    mov   ecx, 0          ; возвращаем null
+    mov   ecx, 0           ; возвращаем null
     jmp   continue
 else:
-    mov   eax, [param]
-    test  eax, eax        ; если объект уже на куче
+    mov   eax, [object]
+    test  eax, eax         ; если объект уже на куче
     jne   get_from_cache
-    mov   ecx, param      ; возвращаем его же
+    mov   ecx, object      ; возвращаем его же
     jmp   continue
 get_from_cache:
-    mov   eax, [param-8]  ; получаем значение из кэша
-    test  eax, eax        ; проверяем наличие объекта
+    mov   eax, [object-8]  ; получаем значение из кэша
+    test  eax, eax         ; проверяем наличие объекта
     jne   else_if
-    mov   ecx, eax        ; возвращаем из кэша
+    mov   ecx, eax         ; возвращаем из кэша
     jmp   continue 
 else_if:
-    call  "EVACUATION"    ; иначе копируем
+    ALLOCATE_AND_COPY      ; иначе копируем
 continue:
     ...
 ```
@@ -521,8 +521,19 @@ def evacuation[T](x: T): T = {
 
 | Название теста            | Анализ утеканий | Межпроцедурный анализ частичных утеканий |
 | :-----------------------: | :-------------: | :--------------------------------------: |
-| scala-std                 | 103             | 397                                      |
-| Виртуальная машина Huawei | 394             | 4488                                     |
+| Статический компилятор    | 394             | 4488                                     |
+
+---
+
+# Результаты
+## Статистика
+
+Количество выделений объектов помеченных типов; меньше --- лучше
+
+| Название теста            | Анализ утеканий | Межпроцедурный анализ частичных утеканий |
+| :-----------------------: | :-------------: | :--------------------------------------: |
+| Компиляция Hello World    | 5'058'176       | 3'717'185                                |
+
 
 <SlideCurrentNo class="absolute right-40px bottom-30px"/>
 
@@ -534,7 +545,7 @@ def evacuation[T](x: T): T = {
 В ходе работы было сделано:
 
 1. Изучены существующие подходы к уменьшению издержек на выделение объектов в куче,
-2. Разработана и реализована оптимизация «межпроцедурный анализ частичных утеканий»,
+2. Разработано и реализовано расширение анализа утеканий «межпроцедурный анализ частичных утеканий»,
 3. Полученное решение было протестировано.
 
 <!--
